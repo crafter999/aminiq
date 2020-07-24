@@ -1,7 +1,7 @@
-import {megaRequest} from "./index"
+import {aminiq} from "./index"
 
 (async ()=>{
-   let ip = await megaRequest({
+   let ip = await aminiq({
       hostname: "ipinfo.io",
       path: "/ip",
       method: "GET",

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("./index");
 (async () => {
-    let ip = await index_1.megaRequest({
+    let ip = await index_1.aminiq({
         hostname: "ipinfo.io",
         path: "/ip",
         method: "GET",

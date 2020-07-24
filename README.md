@@ -8,10 +8,10 @@ Another asynchronous mini request client for **Node.js** with 0 dependencies.
 
 ## Example
 ```typescript
-import {megaRequest} from "aminiq"
+import {aminiq} from "aminiq"
 
 (async ()=>{
-   let ip = await megaRequest({
+   let ip = await aminiq({
       hostname: "ipinfo.io",
       path: "/ip",
       method: "GET",

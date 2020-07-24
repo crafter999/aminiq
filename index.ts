@@ -19,7 +19,7 @@ export interface IGetResult {
    response: httpRequest.IncomingMessage
 }
 
-export function megaRequest(go: GetOptions, postDataObj: ParsedUrlQueryInput = {}): Promise<IGetResult> {
+export function aminiq(go: GetOptions, postDataObj: ParsedUrlQueryInput = {}): Promise<IGetResult> {
    return new Promise((resProm, rejProm) => {
       let chunk = "";
       // progress bar vars
