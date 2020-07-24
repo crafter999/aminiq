@@ -1,0 +1,27 @@
+{
+  "name": "aminiq",
+  "version": "0.2.1",
+  "description": "Asynchronous mini request client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/crafter999/aminiq.git"
+  },
+  "keywords": [
+    "async",
+    "request",
+    "promise"
+  ],
+  "author": "Drakos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/crafter999/aminiq/issues"
+  },
+  "homepage": "https://github.com/crafter999/aminiq#readme",
+  "devDependencies": {
+    "@types/node": "^14.0.26"
+  }
+}
