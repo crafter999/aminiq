@@ -7,7 +7,7 @@ const querystring_1 = require("querystring");
 const https_1 = __importDefault(require("https"));
 const http_1 = __importDefault(require("http"));
 const fs_1 = require("fs");
-function megaRequest(go, postDataObj = {}) {
+function aminiq(go, postDataObj = {}) {
     return new Promise((resProm, rejProm) => {
         let chunk = "";
         // progress bar vars
@@ -75,4 +75,4 @@ function megaRequest(go, postDataObj = {}) {
         req.end();
     });
 }
-exports.megaRequest = megaRequest;
+exports.aminiq = aminiq;
