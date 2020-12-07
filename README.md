@@ -21,6 +21,9 @@ import {aminiq} from "aminiq"
       https: true
    })
 
+   let ip2 = await aminiq("https://ipinfo.io/ip")
+
    console.log(ip.data)
+   console.log(ip2.data)
 })()
 ```

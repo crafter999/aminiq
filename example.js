@@ -11,5 +11,7 @@ const index_1 = require("./index");
         download: false,
         https: true
     });
+    let ip2 = await index_1.aminiq("https://ipinfo.io/ip");
     console.log(ip.data);
+    console.log(ip2.data);
 })();

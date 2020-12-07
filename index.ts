@@ -19,8 +19,26 @@ export interface IGetResult {
    response: httpRequest.IncomingMessage
 }
 
-export function aminiq(go: GetOptions, postDataObj: ParsedUrlQueryInput = {}): Promise<IGetResult> {
+export function aminiq(go: GetOptions | string, postDataObj: ParsedUrlQueryInput = {}): Promise<IGetResult> {
    return new Promise((resProm, rejProm) => {
+      let opts: GetOptions = typeof go === "string" ? {} as GetOptions : go
+      if (typeof go === "string"){
+         const parsedUrl = new URL(go)
+         if (parsedUrl.port === "" && parsedUrl.protocol.includes("https:")){
+            opts.port = 443
+            opts.https = true
+            
+         } else if (parsedUrl.port ==="" && parsedUrl.protocol.includes("http:")){
+            opts.port = 80
+            opts.https = false
+         }
+         opts.hostname = parsedUrl.hostname
+         opts.path = parsedUrl.pathname + parsedUrl.search
+         opts.method = Object.keys(postDataObj).length === 0 ? "GET" : "POST"
+         opts.download = false
+         opts.fileName = ""
+      }
+
       let chunk = "";
       // progress bar vars
       let total = 0;
@@ -28,10 +46,10 @@ export function aminiq(go: GetOptions, postDataObj: ParsedUrlQueryInput = {}): P
       let postData = ""
       // request stuff
       const options: RequestOptions = {
-         hostname: go.hostname,
-         port: go.port,
-         path: go.path,
-         method: go.method,
+         hostname: opts.hostname,
+         port: opts.port,
+         path: opts.path,
+         method: opts.method,
          timeout: 10000,
          headers: {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0"
@@ -46,10 +64,10 @@ export function aminiq(go: GetOptions, postDataObj: ParsedUrlQueryInput = {}): P
          options.headers!!["Content-Length"] = Buffer.byteLength(postData)
       }
 
-      let request = go.https ? httpsRequest.request : httpRequest.request;
+      let request = opts.https ? httpsRequest.request : httpRequest.request;
       let req = request(options, (res: httpRequest.IncomingMessage) => {
-         if (go.download) {
-            res.pipe(createWriteStream(go.fileName));
+         if (opts.download) {
+            res.pipe(createWriteStream(opts.fileName));
             res.on("end", () => {
                resProm({data: "downloaded", response: res});
             });
@@ -74,7 +92,7 @@ export function aminiq(go: GetOptions, postDataObj: ParsedUrlQueryInput = {}): P
       });
       req.setTimeout(10000)
       // get the total size for the progress bar
-      if (go.download) {
+      if (opts.download) {
          req.on("response", (data: any) => {
             total = data.headers["content-length"];
          });
@@ -83,7 +101,7 @@ export function aminiq(go: GetOptions, postDataObj: ParsedUrlQueryInput = {}): P
          rejProm(e);
       });
       req.on("timeout", (e: any) => rejProm(new Error(
-         `Connection to ${go.hostname}:${go.port}${go.path} timed out`
+         `Connection to ${opts.hostname}:${opts.port}${opts.path} timed out`
       )));
 
       if (options.method === "POST") {
