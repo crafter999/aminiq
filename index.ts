@@ -11,7 +11,8 @@ export interface GetOptions {
    download: boolean
    fileName: string
    https: boolean
-   method: string
+   method: string,
+   headers?: any
 }
 
 export interface IGetResult {
@@ -44,6 +45,14 @@ export function aminiq(go: GetOptions | string, postDataObj: ParsedUrlQueryInput
       let total = 0;
       let received = 0;
       let postData = ""
+
+
+      if (!opts.headers){
+         opts.headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0"
+         }
+      }
+
       // request stuff
       const options: RequestOptions = {
          hostname: opts.hostname,
@@ -51,15 +60,14 @@ export function aminiq(go: GetOptions | string, postDataObj: ParsedUrlQueryInput
          path: opts.path,
          method: opts.method,
          timeout: 10000,
-         headers: {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0"
-         }
+         headers: opts.headers
       };
 
       // support POST
       if (options.method === "POST") {
          postData = stringify(postDataObj)
 
+         // TODO: don't override
          options.headers!!["Content-Type"] = "application/x-www-form-urlencoded"
          options.headers!!["Content-Length"] = Buffer.byteLength(postData)
       }
