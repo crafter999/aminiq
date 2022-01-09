@@ -32,6 +32,11 @@ function aminiq(go, postDataObj = {}) {
         let total = 0;
         let received = 0;
         let postData = "";
+        if (!opts.headers) {
+            opts.headers = {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0"
+            };
+        }
         // request stuff
         const options = {
             hostname: opts.hostname,
@@ -39,20 +44,19 @@ function aminiq(go, postDataObj = {}) {
             path: opts.path,
             method: opts.method,
             timeout: 10000,
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0"
-            }
+            headers: opts.headers
         };
         // support POST
         if (options.method === "POST") {
-            postData = querystring_1.stringify(postDataObj);
+            postData = (0, querystring_1.stringify)(postDataObj);
+            // TODO: don't override
             options.headers["Content-Type"] = "application/x-www-form-urlencoded";
             options.headers["Content-Length"] = Buffer.byteLength(postData);
         }
         let request = opts.https ? https_1.default.request : http_1.default.request;
         let req = request(options, (res) => {
             if (opts.download) {
-                res.pipe(fs_1.createWriteStream(opts.fileName));
+                res.pipe((0, fs_1.createWriteStream)(opts.fileName));
                 res.on("end", () => {
                     resProm({ data: "downloaded", response: res });
                 });
