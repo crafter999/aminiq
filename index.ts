@@ -25,13 +25,16 @@ export function aminiq(go: GetOptions | string, postDataObj: ParsedUrlQueryInput
       let opts: GetOptions = typeof go === "string" ? {} as GetOptions : go
       if (typeof go === "string"){
          const parsedUrl = new URL(go)
-         if (parsedUrl.port === "" && parsedUrl.protocol.includes("https:")){
-            opts.port = 443
+         if (parsedUrl.protocol.includes("https:")){
             opts.https = true
+            opts.port = 443
             
-         } else if (parsedUrl.port ==="" && parsedUrl.protocol.includes("http:")){
-            opts.port = 80
+         } else if (parsedUrl.protocol.includes("http:")){
             opts.https = false
+            opts.port = 80
+         }
+         if (parsedUrl.port !==""){
+            opts.port = parseInt(parsedUrl.port)
          }
          opts.hostname = parsedUrl.hostname
          opts.path = parsedUrl.pathname + parsedUrl.search

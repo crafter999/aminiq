@@ -6,6 +6,14 @@ Another asynchronous mini request client for **Node.js** with 0 dependencies.
 ## Install
 ``npm install aminiq``
 
+## Mini GET Example
+```typescript
+const request = await aminiq("http://localhost:80/")
+
+console.log(request.data)
+console.log(request.response)
+```
+
 ## Example GET
 ```typescript
 import {aminiq} from "aminiq"
