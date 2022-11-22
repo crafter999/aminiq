@@ -81,7 +81,10 @@ export function aminiq(go: GetOptions | string, postDataObj: ParsedUrlQueryInput
             if (res.statusCode > 300 && res.statusCode < 400){
                if (res.headers.location){
                   console.log(`Redirecting to ${res.headers.location}`) 
-                  return aminiq(res.headers.location)
+                  const u = new URL(res.headers.location)
+                  opts.hostname = u.host
+                  opts.path = u.pathname
+                  return aminiq(opts,postDataObj)
                }
             }
          }

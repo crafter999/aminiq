@@ -1,6 +1,6 @@
 {
   "name": "aminiq",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Asynchronous mini request client",
   "main": "index.js",
   "types": "index.ts",
