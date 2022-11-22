@@ -77,6 +77,15 @@ export function aminiq(go: GetOptions | string, postDataObj: ParsedUrlQueryInput
 
       let request = opts.https ? httpsRequest.request : httpRequest.request;
       let req = request(options, (res: httpRequest.IncomingMessage) => {
+         if (res.statusCode){
+            if (res.statusCode > 300 && res.statusCode < 400){
+               if (res.headers.location){
+                  console.log(`Redirecting to ${res.headers.location}`) 
+                  return aminiq(res.headers.location)
+               }
+            }
+         }
+
          if (opts.download) {
             res.pipe(createWriteStream(opts.fileName));
             res.on("end", () => {

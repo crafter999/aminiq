@@ -58,6 +58,14 @@ function aminiq(go, postDataObj = {}) {
         }
         let request = opts.https ? https_1.default.request : http_1.default.request;
         let req = request(options, (res) => {
+            if (res.statusCode) {
+                if (res.statusCode > 300 && res.statusCode < 400) {
+                    if (res.headers.location) {
+                        console.log(`Redirecting to ${res.headers.location}`);
+                        return aminiq(res.headers.location);
+                    }
+                }
+            }
             if (opts.download) {
                 res.pipe((0, fs_1.createWriteStream)(opts.fileName));
                 res.on("end", () => {
